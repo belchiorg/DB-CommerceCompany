@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Título da Página</title>
+    <style>
+      /* Estilos do footer */
+      footer {
+        background-color: #118bd2;
+        color: #fff;
+        justify-content: center;
+        display: block;
+        align-items: center;
+        padding: 10px;
+        position: flex;
+        width: 100%;
+        height: 40px;
+        text-align: center;
+        bottom: 0;
+      }
+
+      .content {
+        padding-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">{% block content %} {% endblock %}</div>
+
+    <footer>&copy; WebBusinessApp | Best App in the World!</footer>
+  </body>
+</html>

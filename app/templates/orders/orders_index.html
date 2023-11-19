@@ -1,0 +1,112 @@
+{% extends 'base/page.html' %} {% block header %}
+<h1>{% block title %}Orders{% endblock %}</h1>
+{% endblock %} {% block content %}
+<style>
+  .orders-list {
+    margin: 20px 300px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .order {
+    display: flex;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 2rem;
+    flex-direction: column;
+    align-items: left;
+    justify-content: space-around;
+    width: 370px;
+    margin: 20px 20px;
+    padding: 20px 30px;
+    height: 180px;
+  }
+
+  .o-number {
+    font-size: 1.5rem;
+  }
+
+  .f-number {
+    height: 25%;
+  }
+
+  .o-sku {
+    font-size: 1rem;
+    color: grey;
+  }
+
+  .f-sku {
+    margin: 8px 0px 12px 0px;
+    height: 100%;
+  }
+
+  .o-qty {
+    font-size: 1rem;
+    font-weight: bold;
+    padding-bottom: 15px;
+    color: brown;
+  }
+
+  .o-paid {
+    font-size: 2rem;
+    font-weight: bold;
+    padding-bottom: 15px;
+    color: green;
+  }
+
+  .f-footer {
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .left-column {
+    flex-basis: 50%;
+  }
+
+  .right-column {
+    flex-basis: 50%;
+  }
+
+  .o-font {
+    font-family: "Courier New", Courier, monospace;
+  }
+</style>
+<div class="title-bar">
+  {% if customer %} {% if customer.cust_no %}
+  <h1 class="o-font-title">{{customer.name}}'s Orders</h1>
+  {% endif %} {% endif %}
+</div>
+<hr class="hz-line" />
+<div class="orders-list">
+  <div class="left-column">
+    {% for order in orders %}
+    <div class="order">
+      <div class="f-number">
+        <p class="o-number o-font">Order number: {{ order['order_no'] }}</p>
+      </div>
+      {% set counter = increment_counter(order, contains) %}
+      <div class="f-footer">
+        <p class="o-qty o-font">Number of products: {{ counter }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="right-column">
+    {% for pa in pay %}
+    <div class="order">
+      <div class="f-number">
+        <p class="o-number o-font">Order number: {{ pa['order_no'] }}</p>
+      </div>
+      <div class="f-footer">
+        <h2 class="o-paid o-font">Paid</h2>
+        <ion-icon name="bag-check-outline"></ion-icon>
+      </div>
+    </div>
+    {% if not loop.last %} {% endif %} {% endfor %}
+  </div>
+</div>
+{% endblock %}

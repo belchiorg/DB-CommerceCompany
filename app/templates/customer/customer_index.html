@@ -1,0 +1,136 @@
+{% extends 'base/page.html' %} {% block header %}
+<h1>{% block title %}Customers{% endblock %}</h1>
+{% endblock %} {% block content %}
+
+<style>
+  .customer-list {
+    margin: 20px 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .customer {
+    display: flex;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 2rem;
+    flex-direction: column;
+    align-items: left;
+    justify-content: space-around;
+    width: 370px;
+    margin: 20px 20px;
+    padding: 20px 30px;
+    height: 180px;
+    position: relative;
+  }
+
+  .f-header {
+    text-transform: uppercase;
+    text-size-adjust: 20rem;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .f-body {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: left;
+    margin-top: 10px;
+  }
+  .f-footer {
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+  }
+
+  .header-customer {
+    margin: 0px 30px 0px 30px;
+  }
+
+  .del-btn {
+    background-color: #ff4d40;
+    border: none;
+    color: white;
+    padding: 7px;
+    padding-left: 12px;
+    padding-right: 12px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    font-size: 15px;
+    border-radius: 7px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+  }
+
+  .del-btn button {
+    color: white;
+  }
+
+  .del-btn:hover {
+    background: #ff1500;
+    transition: 0.4s;
+  }
+</style>
+
+<div class="title-bar">
+  <h1 class="o-font-title">Customers</h1>
+  <a class="btn btn-primary" href="/customer/add">Add New Costumer</a>
+</div>
+<hr class="hz-line" />
+
+<div class="container">
+  <div class="customer-list">
+    {% for customer in customers %}
+    <div class="customer">
+      <div class="f-header">
+        <h2>{{ customer.name }}</h2>
+        <h3>Number:{{ customer.cust_no }}</h3>
+      </div>
+      <hr />
+      <div class="f-body">
+        <p>{{ customer.email }}</p>
+        <p>{{ customer.phone }}</p>
+        <p>{{ customer.address }}</p>
+      </div>
+      <div class="f-footer">
+        <div class="del-btn">
+          <form
+            action="{{ url_for('customer_delete', cust_no=customer['cust_no']) }}"
+            method="post"
+          >
+            <button onclick="return confirm('Are you sure?');">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="pagination">
+  {% if current_page > 1 %}
+  <a href="?page={{ current_page - 1 }}" class="btn btn-primary">Previous</a>
+  {% endif %} {% for page_num in range(1, total_pages + 1) %}
+  <a
+    href="?page={{ page_num }}"
+    class="btn btn-primary{% if page_num == current_page %} active{% endif %}"
+    >{{ page_num }}</a
+  >
+  {% endfor %} {% if current_page < total_pages %}
+  <a href="?page={{ current_page + 1 }}" class="btn btn-primary">Next</a>
+  {% endif %}
+</div>
+
+{% endblock %}

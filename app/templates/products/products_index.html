@@ -1,0 +1,104 @@
+{% extends 'base/page.html' %} {% block header %}
+<h1>{% block title %}Products{% endblock %}</h1>
+{% endblock %} {% block content %}
+
+<style>
+  .products-list {
+    margin: 20px 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .product {
+    display: flex;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 2rem;
+    flex-direction: column;
+    align-items: left;
+    justify-content: space-around;
+    width: 370px;
+    margin: 20px 20px;
+    padding: 20px 30px;
+    height: 180px;
+  }
+
+  .p-name {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .f-name {
+    height: 25%;
+  }
+
+  .p-desc {
+    font-size: 1rem;
+    color: gray;
+  }
+
+  .f-desc {
+    margin: 8px 0px 12px 0px;
+    height: 100%;
+    overflow: scroll;
+  }
+
+  .p-price {
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding-bottom: 15px;
+    color: brown;
+  }
+
+  .f-footer {
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .o-font {
+    font-family: "Courier New", Courier, monospace;
+  }
+</style>
+
+<div class="title-bar">
+  <h1 class="o-font-title">Products</h1>
+  <a class="btn btn-primary" href="/products/create">Add Product</a>
+</div>
+<hr class="hz-line" />
+<div class="products-list">
+  {% for product in products %}
+  <div class="product">
+    <div class="f-name">
+      <p class="p-name o-font">{{ product['name'] }}</p>
+    </div>
+    <div class="f-desc">
+      <p class="p-desc o-font">{{ product['description'] }}</p>
+    </div>
+    <div class="f-footer">
+      <p class="p-price o-font">€{{product['price']}}</p>
+      <a class="btn btn-primary" href="{{url_for('product_detail', sku=product['sku'])}}">Check Product</a>
+    </div>
+  </div>
+  {% if not loop.last %}
+  <hr />
+  {% endif %} {% endfor %}
+</div>
+<div class="pagination">
+  {% if current_page > 1 %}
+  <a href="?page={{ current_page - 1 }}" class="btn btn-primary">Previous</a>
+  {% endif %} {% for page_num in range(1, total_pages + 1) %}
+  <a
+    href="?page={{ page_num }}"
+    class="btn btn-primary{% if page_num == current_page %} active{% endif %}"
+    >{{ page_num }}</a
+  >
+  {% endfor %} {% if current_page < total_pages %}
+  <a href="?page={{ current_page + 1 }}" class="btn btn-primary">Next</a>
+  {% endif %}
+</div>
+{% endblock %}
